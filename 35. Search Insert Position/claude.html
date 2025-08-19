@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Insert Position - JS vs TS</title>
+    <style>
+        body {
+            font-family: 'Consolas', 'Monaco', monospace;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #1e1e2e, #313244);
+            color: #cdd6f4;
+            line-height: 1.6;
+        }
+        
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .code-section {
+            background: #181825;
+            border-radius: 12px;
+            padding: 25px;
+            border: 2px solid #45475a;
+            position: relative;
+            overflow: auto;
+        }
+        
+        .language-title {
+            background: linear-gradient(45deg, #f38ba8, #fab387);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .js-title {
+            background: linear-gradient(45deg, #f9e2af, #fab387);
+        }
+        
+        .ts-title {
+            background: linear-gradient(45deg, #89b4fa, #74c7ec);
+        }
+        
+        pre {
+            background: #11111b;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            border-left: 4px solid #f38ba8;
+            margin: 15px 0;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        
+        .js-code pre {
+            border-left-color: #f9e2af;
+        }
+        
+        .ts-code pre {
+            border-left-color: #89b4fa;
+        }
+        
+        .keyword {
+            color: #cba6f7;
+            font-weight: bold;
+        }
+        
+        .string {
+            color: #a6e3a1;
+        }
+        
+        .number {
+            color: #fab387;
+        }
+        
+        .comment {
+            color: #6c7086;
+            font-style: italic;
+        }
+        
+        .type {
+            color: #89b4fa;
+            font-weight: bold;
+        }
+        
+        .function-name {
+            color: #74c7ec;
+        }
+        
+        .difference-box {
+            background: #1e1e2e;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #f38ba8;
+        }
+        
+        .difference-title {
+            color: #f38ba8;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .test-section {
+            background: #181825;
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 30px;
+            border: 2px solid #45475a;
+        }
+        
+        .test-title {
+            background: linear-gradient(45deg, #a6e3a1, #94e2d5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        .test-output {
+            background: #11111b;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #a6e3a1;
+            white-space: pre-line;
+            font-family: monospace;
+        }
+        
+        button {
+            background: linear-gradient(45deg, #f38ba8, #fab387);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 10px 5px;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .highlight {
+            background: #45475a;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; background: linear-gradient(45deg, #f38ba8, #89b4fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 2.5em;">
+        🔍 Search Insert Position
+    </h1>
+    <h2 style="text-align: center; color: #a6adc8; margin-bottom: 40px;">JavaScript vs TypeScript 語法比較</h2>
+
+    <div class="container">
+        <!-- JavaScript 版本 -->
+        <div class="code-section js-code">
+            <div class="language-title js-title">
+                📜 JavaScript 版本
+            </div>
+            
+            <pre><code><span class="comment">/**
+ * 在排序陣列中尋找目標值的插入位置
+ * @param {number[]} nums - 排序的整數陣列
+ * @param {number} target - 目標值
+ * @returns {number} 目標值的索引或插入位置
+ */</span>
+<span class="keyword">function</span> <span class="function-name">searchInsert</span>(nums, target) {
+    <span class="keyword">let</span> left = <span class="number">0</span>;
+    <span class="keyword">let</span> right = nums.length - <span class="number">1</span>;
+    
+    <span class="keyword">while</span> (left <= right) {
+        <span class="keyword">const</span> mid = left + Math.floor((right - left) / <span class="number">2</span>);
+        
+        <span class="keyword">if</span> (nums[mid] === target) {
+            <span class="keyword">return</span> mid;
+        } <span class="keyword">else if</span> (nums[mid] < target) {
+            left = mid + <span class="number">1</span>;
+        } <span class="keyword">else</span> {
+            right = mid - <span class="number">1</span>;
+        }
+    }
+    
+    <span class="keyword">return</span> left;
+}</code></pre>
+
+            <div class="difference-box">
+                <div class="difference-title">JavaScript 特色：</div>
+                • 動態型別，不需要聲明變數型別<br>
+                • 使用 JSDoc 註解來說明參數型別<br>
+                • 函式參數沒有型別檢查<br>
+                • 運行時才會發現型別錯誤
+            </div>
+        </div>
+
+        <!-- TypeScript 版本 -->
+        <div class="code-section ts-code">
+            <div class="language-title ts-title">
+                🔷 TypeScript 版本
+            </div>
+            
+            <pre><code><span class="comment">/**
+ * 在排序陣列中尋找目標值的插入位置
+ * @param nums - 排序的整數陣列
+ * @param target - 目標值
+ * @returns 目標值的索引或插入位置
+ */</span>
+<span class="keyword">function</span> <span class="function-name">searchInsert</span>(nums<span class="type">: number[]</span>, target<span class="type">: number</span>)<span class="type">: number</span> {
+    <span class="keyword">let</span> left<span class="type">: number</span> = <span class="number">0</span>;
+    <span class="keyword">let</span> right<span class="type">: number</span> = nums.length - <span class="number">1</span>;
+    
+    <span class="keyword">while</span> (left <= right) {
+        <span class="keyword">const</span> mid<span class="type">: number</span> = left + Math.floor((right - left) / <span class="number">2</span>);
+        
+        <span class="keyword">if</span> (nums[mid] === target) {
+            <span class="keyword">return</span> mid;
+        } <span class="keyword">else if</span> (nums[mid] < target) {
+            left = mid + <span class="number">1</span>;
+        } <span class="keyword">else</span> {
+            right = mid - <span class="number">1</span>;
+        }
+    }
+    
+    <span class="keyword">return</span> left;
+}</code></pre>
+
+            <div class="difference-box">
+                <div class="difference-title">TypeScript 特色：</div>
+                • 靜態型別檢查，編譯時就能發現錯誤<br>
+                • 明確的參數和回傳值型別聲明<br>
+                • 更好的 IDE 支援和自動補全<br>
+                • 型別安全，減少運行時錯誤
+            </div>
+        </div>
+    </div>
+
+    <!-- 進階版本比較 -->
+    <div class="container">
+        <div class="code-section js-code">
+            <h3 style="color: #f9e2af;">JavaScript - 更多特性</h3>
+            <pre><code><span class="comment">// 箭頭函式版本</span>
+<span class="keyword">const</span> <span class="function-name">searchInsertArrow</span> = (nums, target) => {
+    <span class="keyword">let</span> [left, right] = [<span class="number">0</span>, nums.length - <span class="number">1</span>];
+    
+    <span class="keyword">while</span> (left <= right) {
+        <span class="keyword">const</span> mid = (left + right) >> <span class="number">1</span>; <span class="comment">// 位移運算</span>
+        
+        <span class="keyword">if</span> (nums[mid] === target) <span class="keyword">return</span> mid;
+        nums[mid] < target ? left = mid + <span class="number">1</span> : right = mid - <span class="number">1</span>;
+    }
+    
+    <span class="keyword">return</span> left;
+};
+
+<span class="comment">// 使用陣列解構和三元運算子</span>
+<span class="keyword">const</span> <span class="function-name">binarySearch</span> = (arr, val) => 
+    arr.reduce((pos, curr, idx) => 
+        curr === val ? idx : pos, 
+        arr.findIndex(x => x >= val) === -<span class="number">1</span> ? arr.length : arr.findIndex(x => x >= val)
+    );</code></pre>
+        </div>
+
+        <div class="code-section ts-code">
+            <h3 style="color: #89b4fa;">TypeScript - 泛型和介面</h3>
+            <pre><code><span class="comment">// 泛型版本，支援不同型別</span>
+<span class="keyword">function</span> <span class="function-name">searchInsertGeneric</span>&lt;<span class="type">T</span>&gt;(
+    nums<span class="type">: T[]</span>, 
+    target<span class="type">: T</span>, 
+    compareFn<span class="type">: (a: T, b: T) => number = (a, b) => (a as any) - (b as any)</span>
+)<span class="type">: number</span> {
+    <span class="keyword">let</span> left<span class="type">: number</span> = <span class="number">0</span>;
+    <span class="keyword">let</span> right<span class="type">: number</span> = nums.length - <span class="number">1</span>;
+    
+    <span class="keyword">while</span> (left <= right) {
+        <span class="keyword">const</span> mid<span class="type">: number</span> = Math.floor((left + right) / <span class="number">2</span>);
+        <span class="keyword">const</span> comparison<span class="type">: number</span> = compareFn(nums[mid], target);
+        
+        <span class="keyword">if</span> (comparison === <span class="number">0</span>) <span class="keyword">return</span> mid;
+        comparison < <span class="number">0</span> ? left = mid + <span class="number">1</span> : right = mid - <span class="number">1</span>;
+    }
+    
+    <span class="keyword">return</span> left;
+}
+
+<span class="comment">// 定義介面</span>
+<span class="keyword">interface</span> <span class="type">SearchResult</span> {
+    index<span class="type">: number</span>;
+    found<span class="type">: boolean</span>;
+    insertPosition<span class="type">: number</span>;
+}
+
+<span class="keyword">const</span> <span class="function-name">searchWithDetails</span> = (nums<span class="type">: number[]</span>, target<span class="type">: number</span>)<span class="type">: SearchResult</span> => ({
+    index: searchInsert(nums, target),
+    found: nums.includes(target),
+    insertPosition: searchInsert(nums, target)
+});</code></pre>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <div class="test-title">🧪 實際測試比較</div>
+        
+        <button onclick="runJavaScriptTests()">測試 JavaScript 版本</button>
+        <button onclick="runTypeScriptTests()">測試 TypeScript 版本</button>
+        <button onclick="comparePerformance()">效能比較</button>
+        <button onclick="showTypeDifference()">型別差異示例</button>
+        
+        <div id="testOutput" class="test-output"></div>
+    </div>
+
+    <script>
+        // JavaScript 實作
+        function searchInsert(nums, target) {
+            let left = 0;
+            let right = nums.length - 1;
+            
+            while (left <= right) {
+                const mid = left + Math.floor((right - left) / 2);
+                
+                if (nums[mid] === target) {
+                    return mid;
+                } else if (nums[mid] < target) {
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
+                }
+            }
+            
+            return left;
+        }
+
+        // TypeScript 風格的實作（在 JS 中模擬）
+        function searchInsertTS(nums, target) {
+            // 模擬型別檢查
+            if (!Array.isArray(nums)) {
+                throw new Error('nums must be an array');
+            }
+            if (typeof target !== 'number') {
+                throw new Error('target must be a number');
+            }
+            
+            let left = 0;
+            let right = nums.length - 1;
+            
+            while (left <= right) {
+                const mid = left + Math.floor((right - left) / 2);
+                
+                if (nums[mid] === target) {
+                    return mid;
+                } else if (nums[mid] < target) {
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
+                }
+            }
+            
+            return left;
+        }
+
+        function runJavaScriptTests() {
+            const output = document.getElementById('testOutput');
+            const testCases = [
+                [[1, 3, 5, 6], 5, 2],
+                [[1, 3, 5, 6], 2, 1],
+                [[1, 3, 5, 6], 7, 4],
+                [[1, 3, 5, 6], 0, 0]
+            ];
+            
+            let result = "🟡 JavaScript 測試結果：\n\n";
+            
+            testCases.forEach(([nums, target, expected], i) => {
+                const actual = searchInsert(nums, target);
+                const status = actual === expected ? "✅" : "❌";
+                result += `測試 ${i + 1}: ${status}\n`;
+                result += `  輸入: nums = [${nums.join(', ')}], target = ${target}\n`;
+                result += `  預期: ${expected}, 實際: ${actual}\n\n`;
+            });
+            
+            // 展示 JavaScript 的靈活性（也是缺點）
+            result += "🔍 JavaScript 靈活性示例：\n";
+            result += `searchInsert([1, "3", 5], 4) = ${searchInsert([1, "3", 5], 4)}\n`;
+            result += `searchInsert("123", 2) = ${searchInsert("123", 2)} (字串也能用！)\n`;
+            
+            output.textContent = result;
+        }
+
+        function runTypeScriptTests() {
+            const output = document.getElementById('testOutput');
+            const testCases = [
+                [[1, 3, 5, 6], 5, 2],
+                [[1, 3, 5, 6], 2, 1],
+                [[1, 3, 5, 6], 7, 4],
+                [[1, 3, 5, 6], 0, 0]
+            ];
+            
+            let result = "🔷 TypeScript 風格測試結果：\n\n";
+            
+            testCases.forEach(([nums, target, expected], i) => {
+                try {
+                    const actual = searchInsertTS(nums, target);
+                    const status = actual === expected ? "✅" : "❌";
+                    result += `測試 ${i + 1}: ${status}\n`;
+                    result += `  輸入: nums = [${nums.join(', ')}], target = ${target}\n`;
+                    result += `  預期: ${expected}, 實際: ${actual}\n\n`;
+                } catch (error) {
+                    result += `測試 ${i + 1}: ❌ 錯誤: ${error.message}\n\n`;
+                }
+            });
+            
+            // 展示型別檢查
+            result += "🛡️ 型別安全示例：\n";
+            try {
+                searchInsertTS([1, "3", 5], 4);
+            } catch (e) {
+                result += `混合型別陣列: ❌ ${e.message}\n`;
+            }
+            
+            try {
+                searchInsertTS("123", 2);
+            } catch (e) {
+                result += `字串輸入: ❌ ${e.message}\n`;
+            }
+            
+            output.textContent = result;
+        }
+
+        function comparePerformance() {
+            const output = document.getElementById('testOutput');
+            const largeArray = Array.from({length: 10000}, (_, i) => i * 2);
+            const target = 9999;
+            
+            // JavaScript 版本測試
+            const startJS = performance.now();
+            for (let i = 0; i < 1000; i++) {
+                searchInsert(largeArray, target);
+            }
+            const endJS = performance.now();
+            
+            // TypeScript 風格版本測試
+            const startTS = performance.now();
+            for (let i = 0; i < 1000; i++) {
+                searchInsertTS(largeArray, target);
+            }
+            const endTS = performance.now();
+            
+            const result = `⚡ 效能比較結果：\n\n` +
+                `JavaScript 版本: ${(endJS - startJS).toFixed(2)}ms\n` +
+                `TypeScript 風格: ${(endTS - startTS).toFixed(2)}ms\n\n` +
+                `注意：TypeScript 風格包含了額外的型別檢查，\n` +
+                `在實際 TypeScript 編譯後，效能會更接近 JavaScript。\n\n` +
+                `測試陣列大小: 10,000 元素\n` +
+                `執行次數: 1,000 次\n` +
+                `演算法複雜度: O(log n)`;
+            
+            output.textContent = result;
+        }
+
+        function showTypeDifference() {
+            const output = document.getElementById('testOutput');
+            
+            const result = `🔍 JavaScript vs TypeScript 主要差異：\n\n` +
+                `📜 JavaScript:\n` +
+                `• 動態型別，運行時才檢查型別\n` +
+                `• 更靈活，但容易出錯\n` +
+                `• 直接在瀏覽器執行\n` +
+                `• 學習成本較低\n\n` +
+                
+                `🔷 TypeScript:\n` +
+                `• 靜態型別，編譯時檢查型別\n` +
+                `• 更安全，減少運行時錯誤\n` +
+                `• 需要編譯成 JavaScript 執行\n` +
+                `• 學習成本較高，但開發體驗更好\n\n` +
+                
+                `💡 選擇建議：\n` +
+                `• 小專案、快速開發 → JavaScript\n` +
+                `• 大型專案、團隊協作 → TypeScript\n` +
+                `• 需要型別安全 → TypeScript\n` +
+                `• 學習階段 → 先 JavaScript 再 TypeScript`;
+            
+            output.textContent = result;
+        }
+
+        // 初始化顯示
+        document.addEventListener('DOMContentLoaded', () => {
+            showTypeDifference();
+        });
+    </script>
+</body>
+</html>
